@@ -19,6 +19,13 @@ public class Delivery {
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 
+	public Delivery(Address address) {
+	}
+
+    public Delivery() {
+
+    }
+
     public Long getId() {
         return id;
     }
