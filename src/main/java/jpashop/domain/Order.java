@@ -20,7 +20,7 @@ public class Order {
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
-
+    /** 전체 주문 가격 조회 */
 
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="DELIVERY_ID")
@@ -31,6 +31,13 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status; // 주문상태
 
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
+    }
     //생성 메소드
     public static Order createOrder(Member member, Delivery delivery,OrderItem... orderItems){
         Order order = new Order();
@@ -119,6 +126,8 @@ public class Order {
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
+
+
 }
 
 
