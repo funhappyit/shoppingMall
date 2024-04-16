@@ -21,4 +21,5 @@ public class OrderSearch {
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
+
 }

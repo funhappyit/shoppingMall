@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ItemController {
@@ -36,7 +37,7 @@ public class ItemController {
     @RequestMapping(value = "/items/{itemId}/edit", method = RequestMethod.GET)
     public String updateItemForm(@PathVariable("itemId") Long itemId, Model model) {
 
-        Item item = itemService.findOne(itemId);
+        Optional<Item> item = itemService.findOne(itemId);
         model.addAttribute("item", item);
         return "items/updateItemForm";
     }

@@ -1,6 +1,8 @@
 package jpashop.domain;
 
 
+import java.util.Optional;
+
 import javax.persistence.*;
 
 @Entity
@@ -25,6 +27,7 @@ public class OrderItem {
 
     //생성 메소드
     public static OrderItem createOrderItem(Item item,int orderPrice,int count){
+
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOrderPrice(orderPrice);
