@@ -2,16 +2,17 @@ package jpashop.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
-
-import javax.persistence.criteria.Join;
 import javax.transaction.Transactional;
 
+
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import jpashop.repository.custom.CustomOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.querydsl.core.BooleanBuilder;
 
 import jpashop.domain.Delivery;
 import jpashop.domain.Item;
@@ -29,7 +30,8 @@ public class OrderService {
 	@Autowired MemberRepository memberRepository;
 	@Autowired OrderRepository orderRepository;
 	@Autowired ItemService itemService;
-
+	@Autowired
+	private CustomOrderRepository customOrderRepository;
 	/* 주문 */
 	public Long order(Long memberId,Long itemId,int count){
 		//엔티티 조회
@@ -60,18 +62,20 @@ public class OrderService {
 
 	/** 주문 검색 */
 	public List<Order> findOrders(OrderSearch orderSearch) {
-		QOrder order = QOrder.order;
-		BooleanBuilder builder = new BooleanBuilder();
+		Specification<Order> spec = Specification.where(null);
 
 		if (orderSearch.getOrderStatus() != null) {
-			builder.and(order.status.eq(orderSearch.getOrderStatus()));
+			spec = spec.and((root, query, criteriaBuilder) ->
+					criteriaBuilder.equal(root.get("status"), orderSearch.getOrderStatus()));
 		}
 
 		if (orderSearch.getMemberName() != null) {
-			builder.and(order.member.name.like("%" + orderSearch.getMemberName() + "%"));
+			spec = spec.and((root, query, criteriaBuilder) ->
+					criteriaBuilder.like(root.get("member").get("name"), "%" + orderSearch.getMemberName() + "%"));
 		}
 
-		return (List<Order>) orderRepository.findAll(builder);
+		return orderRepository.findAll(spec);
+
 	}
 
 

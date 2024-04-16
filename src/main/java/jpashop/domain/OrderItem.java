@@ -1,7 +1,7 @@
 package jpashop.domain;
 
 
-import java.util.Optional;
+
 
 import javax.persistence.*;
 
