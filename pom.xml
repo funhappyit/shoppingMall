@@ -8,7 +8,7 @@
     <artifactId>shoppingMall</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>shoppingMall</name>
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
     <properties>
 
         <!-- 기본 설정 -->

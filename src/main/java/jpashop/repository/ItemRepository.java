@@ -7,12 +7,21 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+
 import jpashop.domain.Item;
+import jpashop.domain.QItem;
 
 @Repository
 public class ItemRepository {
 	@PersistenceContext
 	EntityManager em;
+
+	 JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+
+	public ItemRepository(EntityManager em) {
+		this.queryFactory = new JPAQueryFactory(em);
+	}
 
 	public void save(Item item){
 		if(item.getId() == null){
@@ -22,10 +31,15 @@ public class ItemRepository {
 		}
 	}
 	public Item findOne(Long id){
-		return em.find(Item.class,id);
+		QItem item = QItem.item;
+		return queryFactory.selectFrom(item)
+			.where(item.id.eq(id))
+			.fetchOne();
 	}
+
 	public List<Item> findAll(){
-		return em.createQuery("select i from Item i",Item.class).getResultList();
+		QItem item = QItem.item;
+		return queryFactory.selectFrom(item).fetch();
 	}
 
 }

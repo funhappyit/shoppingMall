@@ -12,6 +12,7 @@ import jpashop.domain.Item;
 import jpashop.domain.Member;
 import jpashop.domain.Order;
 import jpashop.domain.OrderItem;
+import jpashop.domain.OrderSearch;
 import jpashop.repository.MemberRepository;
 import jpashop.repository.OrderRepository;
 
@@ -47,6 +48,9 @@ public class OrderService {
 		order.cancel();
 	}
 
-
+	/** 주문 검색 */
+	public List<Order> findOrders(OrderSearch orderSearch) {
+		return orderRepository.findAll(orderSearch);
+	}
 
 }
